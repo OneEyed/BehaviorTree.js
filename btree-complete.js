@@ -302,7 +302,7 @@ module.exports = _dereq_('./branch_node').extend({
   },
   success: function() {
     this.base();
-    if( tihs.actualTask == 0 ) {
+    if( this.actualTask == 0 ) {
       this._actualTask = 1;
       if (this._actualTask < this.children.length) {
         this._run(this._object);
@@ -315,16 +315,16 @@ module.exports = _dereq_('./branch_node').extend({
   },
   fail: function() {
     this.base();
-    if( tihs.actualTask == 0 ) {
+    if( this.actualTask == 0 ) {
       this._actualTask = 2;
       if (this._actualTask < this.children.length) {
         this._run(this._object);
       } else {
-        this._control.success();
+        this._control.fail();
       }
     }
     else
-      this._control.success();
+      this._control.fail();
   }
 });
 
