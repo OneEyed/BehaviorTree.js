@@ -5,7 +5,7 @@ BehaviorTree.BranchNode = require('./branch_node');
 BehaviorTree.Priority = require('./priority');
 BehaviorTree.Sequence = require('./sequence');
 BehaviorTree.Random = require('./random');
-
+BehaviorTree.Condition = require('./condition');
 BehaviorTree.Decorator = require('./decorator');
 BehaviorTree.InvertDecorator = require('./invert_decorator');
 BehaviorTree.AlwaysFailDecorator = require('./always_fail_decorator');

@@ -11,9 +11,7 @@
  *
  * Version: 1.0.3
  */
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.BehaviorTree=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"Base":[function(_dereq_,module,exports){
-module.exports=_dereq_('3iKuuX');
-},{}],"3iKuuX":[function(_dereq_,module,exports){
+!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.BehaviorTree=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/hvVbF":[function(_dereq_,module,exports){
 (function (global){
 (function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 /*
@@ -161,6 +159,8 @@ Base = Base.extend({
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],"Base":[function(_dereq_,module,exports){
+module.exports=_dereq_('/hvVbF');
 },{}],3:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./decorator').extend({
@@ -172,7 +172,7 @@ module.exports = _dereq_('./decorator').extend({
   },
 });
 
-},{"./decorator":7}],4:[function(_dereq_,module,exports){
+},{"./decorator":8}],4:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./decorator').extend({
   success: function() {
@@ -183,7 +183,7 @@ module.exports = _dereq_('./decorator').extend({
   },
 });
 
-},{"./decorator":7}],5:[function(_dereq_,module,exports){
+},{"./decorator":8}],5:[function(_dereq_,module,exports){
 /**
  * BehaviorTree.js
  * https://github.com/Calamari/BehaviorTree.js
@@ -249,7 +249,7 @@ BehaviorTree.getNode = function(name) {
 
 module.exports = BehaviorTree;
 
-},{"../lib/base":"3iKuuX"}],6:[function(_dereq_,module,exports){
+},{"../lib/base":"/hvVbF"}],6:[function(_dereq_,module,exports){
 
 var BehaviorTree = _dereq_('./behavior_tree');
 
@@ -290,7 +290,37 @@ module.exports = _dereq_('./node').extend({
   }
 });
 
-},{"./behavior_tree":5,"./node":10}],7:[function(_dereq_,module,exports){
+},{"./behavior_tree":5,"./node":11}],7:[function(_dereq_,module,exports){
+
+module.exports = _dereq_('./branch_node').extend({
+  _run: function() {
+    if (this._nodeRunning) {
+      this._nodeRunning.run(this._object);
+    } else {
+      this.base();
+    }
+  },
+  success: function() {
+    this.base();
+    this._actualTask = 1;
+    if (this._actualTask < this.children.length) {
+      this._run(this._object);
+    } else {
+      this._control.success();
+    }
+  },
+  fail: function() {
+    this.base();
+    this._actualTask = 2;
+    if (this._actualTask < this.children.length) {
+      this._run(this._object);
+    } else {
+      this._control.fail();
+    }
+  }
+});
+
+},{"./branch_node":6}],8:[function(_dereq_,module,exports){
 
 var BehaviorTree = _dereq_('./behavior_tree');
 
@@ -317,7 +347,7 @@ module.exports = _dereq_('./node').extend({
   },
 });
 
-},{"./behavior_tree":5,"./node":10}],8:[function(_dereq_,module,exports){
+},{"./behavior_tree":5,"./node":11}],9:[function(_dereq_,module,exports){
 var BehaviorTree = _dereq_('./behavior_tree');
 BehaviorTree.Node = _dereq_('./node');
 BehaviorTree.Task = _dereq_('./task');
@@ -325,7 +355,7 @@ BehaviorTree.BranchNode = _dereq_('./branch_node');
 BehaviorTree.Priority = _dereq_('./priority');
 BehaviorTree.Sequence = _dereq_('./sequence');
 BehaviorTree.Random = _dereq_('./random');
-
+BehaviorTree.Condition = _dereq_('./condition');
 BehaviorTree.Decorator = _dereq_('./decorator');
 BehaviorTree.InvertDecorator = _dereq_('./invert_decorator');
 BehaviorTree.AlwaysFailDecorator = _dereq_('./always_fail_decorator');
@@ -333,7 +363,7 @@ BehaviorTree.AlwaysSucceedDecorator = _dereq_('./always_succeed_decorator');
 
 module.exports = BehaviorTree;
 
-},{"./always_fail_decorator":3,"./always_succeed_decorator":4,"./behavior_tree":5,"./branch_node":6,"./decorator":7,"./invert_decorator":9,"./node":10,"./priority":11,"./random":12,"./sequence":13,"./task":14}],9:[function(_dereq_,module,exports){
+},{"./always_fail_decorator":3,"./always_succeed_decorator":4,"./behavior_tree":5,"./branch_node":6,"./condition":7,"./decorator":8,"./invert_decorator":10,"./node":11,"./priority":12,"./random":13,"./sequence":14,"./task":15}],10:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./decorator').extend({
   success: function() {
@@ -344,7 +374,7 @@ module.exports = _dereq_('./decorator').extend({
   },
 });
 
-},{"./decorator":7}],10:[function(_dereq_,module,exports){
+},{"./decorator":8}],11:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('../lib/base').extend({
   constructor: function(config) {
@@ -368,7 +398,7 @@ module.exports = _dereq_('../lib/base').extend({
   }
 });
 
-},{"../lib/base":"3iKuuX"}],11:[function(_dereq_,module,exports){
+},{"../lib/base":"/hvVbF"}],12:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./branch_node').extend({
   success: function() {
@@ -386,7 +416,7 @@ module.exports = _dereq_('./branch_node').extend({
   }
 });
 
-},{"./branch_node":6}],12:[function(_dereq_,module,exports){
+},{"./branch_node":6}],13:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./branch_node').extend({
   start: function() {
@@ -412,7 +442,7 @@ module.exports = _dereq_('./branch_node').extend({
   }
 });
 
-},{"./branch_node":6}],13:[function(_dereq_,module,exports){
+},{"./branch_node":6}],14:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./branch_node').extend({
   _run: function() {
@@ -437,10 +467,10 @@ module.exports = _dereq_('./branch_node').extend({
   }
 });
 
-},{"./branch_node":6}],14:[function(_dereq_,module,exports){
+},{"./branch_node":6}],15:[function(_dereq_,module,exports){
 
 module.exports = _dereq_('./node').extend({});
 
-},{"./node":10}]},{},[8])
-(8)
+},{"./node":11}]},{},[9])
+(9)
 });
