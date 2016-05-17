@@ -302,21 +302,29 @@ module.exports = _dereq_('./branch_node').extend({
   },
   success: function() {
     this.base();
-    this._actualTask = 1;
-    if (this._actualTask < this.children.length) {
-      this._run(this._object);
-    } else {
-      this._control.success();
+    if( tihs.actualTask == 0 ) {
+      this._actualTask = 1;
+      if (this._actualTask < this.children.length) {
+        this._run(this._object);
+      } else {
+        this._control.success();
+      }
     }
+    else
+      this._control.success();
   },
   fail: function() {
     this.base();
-    this._actualTask = 2;
-    if (this._actualTask < this.children.length) {
-      this._run(this._object);
-    } else {
-      this._control.fail();
+    if( tihs.actualTask == 0 ) {
+      this._actualTask = 2;
+      if (this._actualTask < this.children.length) {
+        this._run(this._object);
+      } else {
+        this._control.success();
+      }
     }
+    else
+      this._control.success();
   }
 });
 
