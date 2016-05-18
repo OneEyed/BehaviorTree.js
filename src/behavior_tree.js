@@ -17,6 +17,7 @@ BehaviorTree = require('../lib/base').extend({
     this.title = config.title || 'btree' + (countUnnamed);
     this._rootNode = config.tree;
     this._object = config.object;
+    this._debug = config.debug;
   },
   setObject: function(obj) {
     this._object = obj;
@@ -55,6 +56,9 @@ BehaviorTree.register = function(name, node) {
 };
 BehaviorTree.getNode = function(name) {
   var node = name instanceof BehaviorTree.Node ? name : this._registeredNodes[name];
+  //f( this._debug ) {
+   // console.log("getNode -> " + name);
+  //}
   if (!node) {
     throw new Error('The node "' + name + '" could not be looked up. Maybe it was never registered?');
   }

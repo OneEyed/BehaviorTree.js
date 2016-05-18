@@ -203,6 +203,7 @@ BehaviorTree = _dereq_('../lib/base').extend({
     this.title = config.title || 'btree' + (countUnnamed);
     this._rootNode = config.tree;
     this._object = config.object;
+    this._debug = config.debug;
   },
   setObject: function(obj) {
     this._object = obj;
@@ -241,6 +242,9 @@ BehaviorTree.register = function(name, node) {
 };
 BehaviorTree.getNode = function(name) {
   var node = name instanceof BehaviorTree.Node ? name : this._registeredNodes[name];
+  //f( this._debug ) {
+   // console.log("getNode -> " + name);
+  //}
   if (!node) {
     throw new Error('The node "' + name + '" could not be looked up. Maybe it was never registered?');
   }
@@ -302,7 +306,7 @@ module.exports = _dereq_('./branch_node').extend({
   },
   success: function() {
     this.base();
-    if( this.actualTask == 0 ) {
+    if( this._actualTask == 0 ) {
       this._actualTask = 1;
       if (this._actualTask < this.children.length) {
         this._run(this._object);
@@ -315,16 +319,16 @@ module.exports = _dereq_('./branch_node').extend({
   },
   fail: function() {
     this.base();
-    if( this.actualTask == 0 ) {
+    if( this._actualTask == 0 ) {
       this._actualTask = 2;
       if (this._actualTask < this.children.length) {
         this._run(this._object);
       } else {
-        this._control.fail();
+        this._control.success();
       }
     }
     else
-      this._control.fail();
+      this._control.success();
   }
 });
 

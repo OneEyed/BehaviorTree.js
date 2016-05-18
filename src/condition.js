@@ -9,7 +9,7 @@ module.exports = require('./branch_node').extend({
   },
   success: function() {
     this.base();
-    if( this.actualTask == 0 ) {
+    if( this._actualTask == 0 ) {
       this._actualTask = 1;
       if (this._actualTask < this.children.length) {
         this._run(this._object);
@@ -22,15 +22,15 @@ module.exports = require('./branch_node').extend({
   },
   fail: function() {
     this.base();
-    if( this.actualTask == 0 ) {
+    if( this._actualTask == 0 ) {
       this._actualTask = 2;
       if (this._actualTask < this.children.length) {
         this._run(this._object);
       } else {
-        this._control.fail();
+        this._control.success();
       }
     }
     else
-      this._control.fail();
+      this._control.success();
   }
 });
